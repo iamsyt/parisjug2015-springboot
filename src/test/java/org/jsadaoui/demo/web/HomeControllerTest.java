@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = Application.class)
-@IntegrationTest("server.port:9000")
+@IntegrationTest("server.port:0")
 public class HomeControllerTest {
 
     @Autowired

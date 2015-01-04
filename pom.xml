@@ -13,6 +13,11 @@
         <version>1.2.0.RELEASE</version>
     </parent>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <start-class>org.jsadaoui.demo.Application</start-class>
+    </properties>
+
     <dependencies>
 	    <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -22,11 +27,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.8</version>
+        </dependency>
     </dependencies>
-
-    <properties>
-        <start-class>org.jsadaoui.demo.Application</start-class>
-    </properties>
 
     <build>
         <plugins>
