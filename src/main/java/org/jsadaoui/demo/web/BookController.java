@@ -2,6 +2,8 @@ package org.jsadaoui.demo.web;
 
 import org.jsadaoui.demo.domain.Book;
 import org.jsadaoui.demo.repository.BookRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +39,9 @@ public class BookController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Book createBook(@RequestBody Book book) {
-        return bookRepository.add(book);
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        bookRepository.add(book);
+        return new ResponseEntity<Book>(book, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/delete/{isbn}", method = RequestMethod.POST)
