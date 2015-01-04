@@ -43,7 +43,7 @@ public class HomeControllerTest {
         mvc.perform(get("/").accept(MediaType.TEXT_PLAIN))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_PLAIN + ";charset=ISO-8859-1"))
+                .andExpect(content().contentType(MediaType.TEXT_PLAIN + ";charset=UTF-8"))
                 .andExpect(content().string("Hello, world."));
     }
 }
