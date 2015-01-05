@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST Services for {@link org.jsadaoui.demo.domain.Book} entity
@@ -21,32 +23,34 @@ import java.util.List;
 @RequestMapping(value = "/rest/books")
 public class BookController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BookController.class);
+
     @Inject
     private BookRepository bookRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Book> list() {
-        return bookRepository.getAll();
+        LOG.debug("REST request to get all Books");
+        return bookRepository.findAll();
     }
 
     @RequestMapping(value = "/{isbn}", method = RequestMethod.GET)
     public ResponseEntity<Book> get(@PathVariable("isbn") String isbn) {
-        Book book = bookRepository.get(isbn);
-        if (book == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(book, HttpStatus.OK);
+        LOG.debug("REST request to get book : {}", isbn);
+        return Optional.ofNullable(bookRepository.findOne(isbn))
+                .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Book> create(@Valid @RequestBody Book book) {
-        bookRepository.add(book);
-        return new ResponseEntity<Book>(book, HttpStatus.CREATED);
+    public void create(@Valid @RequestBody Book book) {
+        LOG.debug("REST request to save book : {}", book);
+        bookRepository.save(book);
     }
 
     @RequestMapping(value = "/{isbn}", method = RequestMethod.DELETE)
-    public Book delete(@PathVariable("isbn") String isbn) {
-        Book book = bookRepository.get(isbn);
-        return bookRepository.delete(book);
+    public void delete(@PathVariable("isbn") String isbn) {
+        LOG.debug("REST request to delete book : {}", isbn);
+        bookRepository.delete(isbn);
     }
 }
