@@ -42,6 +42,12 @@ public class BookController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @RequestMapping(value = "/author/{author}", method = RequestMethod.GET)
+    public List<Book> listByAuthor(@PathVariable("author") String author) {
+        LOG.debug("REST request to get alls books : {}", author);
+        return bookRepository.findByAuthor(author);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public void create(@Valid @RequestBody Book book) {
         LOG.debug("REST request to save book : {}", book);

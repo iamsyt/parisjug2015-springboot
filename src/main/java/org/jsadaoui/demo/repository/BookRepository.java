@@ -21,4 +21,5 @@ import java.util.Map;
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
 
+    public List<Book> findByAuthor(String author);
 }
