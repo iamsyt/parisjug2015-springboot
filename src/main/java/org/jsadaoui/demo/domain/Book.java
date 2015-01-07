@@ -21,7 +21,7 @@ public class Book {
 
     @NotNull
     @Size(min = 5)
-    private String name;
+    private String title;
 
     @NotNull
     @Size(min = 10)
