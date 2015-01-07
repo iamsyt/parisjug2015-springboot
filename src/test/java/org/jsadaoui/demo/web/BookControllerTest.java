@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,16 +58,14 @@ public class BookControllerTest {
     @Before
     public void setUp() {
         this.mvc = webAppContextSetup(this.wac).build();
-
         bookRepository.save(bookSpringInAction);
     }
 
     @Test
     public void shouldCreateBookSpringParLaPratique() throws Exception {
-        RestTemplate restTemplate = new RestTemplate();
-
         // when
-        ResponseEntity response = restTemplate.postForEntity("http://localhost:" + port + "/rest/books", bookSpringParLaPratique, Book.class);
+        ResponseEntity response = new TestRestTemplate()
+                .postForEntity("http://localhost:" + port + "/rest/books", bookSpringParLaPratique, Book.class);
 
         // then
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
@@ -81,9 +79,7 @@ public class BookControllerTest {
 
                 // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].isbn").value("9781935182351"))
-                .andExpect(jsonPath("$.[0].name").value("Spring in Action"))
-                .andExpect(jsonPath("$.[0].author").value("Craig Walls"));
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test
@@ -95,7 +91,7 @@ public class BookControllerTest {
                 // then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.isbn").value("9781935182351"))
-                .andExpect(jsonPath("$.name").value("Spring in Action"))
+                .andExpect(jsonPath("$.title").value("Spring in Action"))
                 .andExpect(jsonPath("$.author").value("Craig Walls"));
     }
 
@@ -116,7 +112,7 @@ public class BookControllerTest {
         public Book bookSpringParLaPratique() {
             Book book = new Book();
             book.setIsbn("9782212124217");
-            book.setName("Spring par la Pratique Spring 2.5 et 3.0");
+            book.setTitle("Spring par la Pratique Spring 2.5 et 3.0");
             book.setAuthor("Julien Dubois");
             book.setPrice(new BigDecimal("45.60"));
             return book;
@@ -126,7 +122,7 @@ public class BookControllerTest {
         public Book bookSpringInAction() {
             Book book = new Book();
             book.setIsbn("9781935182351");
-            book.setName("Spring in Action");
+            book.setTitle("Spring in Action");
             book.setAuthor("Craig Walls");
             book.setPrice(new BigDecimal("42.40"));
             return book;

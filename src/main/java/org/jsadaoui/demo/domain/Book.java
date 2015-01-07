@@ -29,7 +29,7 @@ public class Book implements Serializable {
     @NotNull
     @Size(min = 5)
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @NotNull
     @Size(min = 10)

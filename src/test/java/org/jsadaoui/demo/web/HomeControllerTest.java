@@ -13,6 +13,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.inject.Inject;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,21 +24,14 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = Application.class)
-@IntegrationTest("server.port:0")
 public class HomeControllerTest {
 
-    @Autowired
+    @Inject
     private WebApplicationContext wac;
-
-    private MockMvc mvc;
-
-    @Before
-    public void setUp() {
-        this.mvc = webAppContextSetup(this.wac).build();
-    }
 
     @Test
     public void testHome() throws Exception {
+        MockMvc mvc = webAppContextSetup(this.wac).build();
         mvc.perform(get("/").accept(MediaType.TEXT_PLAIN))
                 .andDo(print())
                 .andExpect(status().isOk())
