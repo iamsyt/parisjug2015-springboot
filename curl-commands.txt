@@ -1,12 +1,12 @@
 
-ntent-Type: application/json" -d '{"isbn":"9782212124217","title":"Spring par la Pratique Spring 2.5 et 3.0","author":"Julien Dubois","price":"45.60"}' http://localhost:8080/rest/books
+curl -H "Content-Type: application/json" -d '{"isbn":"9782212124217","title":"Spring par la Pratique Spring 2.5 et 3.0","author":"Julien Dubois","price":"45.60"}' http://localhost:8080/rest/books
 
 curl -H "Content-Type: application/json" -d '{"isbn":"978221217","title":"Spring par la Pratique Spring 2.5 et 3.0","author":"J","price":"-40"}' http://localhost:8080/rest/books
 
 curl http://localhost:8080/rest/books
 curl http://localhost:8080/rest/books/9782212124217
 curl http://localhost:8080/rest/books/author/Julien%20Dubois
-curl -X DELETE http://localhost:8080/rest/books/9782212124217
+curl -X DELETE http://localhost:8080/rest/books/9780321356680
 
 
 curl -H "Content-Type: application/json" -d '{"isbn":"9780321356680","title":"Java Effective","author":"Joshua Bloch","price":"50.60"}' http://localhost:8080/rest/books
