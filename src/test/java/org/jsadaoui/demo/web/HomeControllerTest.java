@@ -28,11 +28,17 @@ public class HomeControllerTest {
 
     @Inject
     private WebApplicationContext wac;
+    private MockMvc mvc;
+
+    @Before
+    public void setUp() {
+        this.mvc = webAppContextSetup(this.wac).build();
+    }
 
     @Test
     public void testHome() throws Exception {
-        MockMvc mvc = webAppContextSetup(this.wac).build();
-        mvc.perform(get("/").accept(MediaType.TEXT_PLAIN))
+        mvc.perform(get("/").
+                accept(MediaType.TEXT_PLAIN))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.TEXT_PLAIN + ";charset=UTF-8"))
